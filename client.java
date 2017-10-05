@@ -12,7 +12,7 @@ import java.util.Random;
 
 public final class client {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception, InterruptedException {
         
     	
     	
@@ -44,7 +44,7 @@ public final class client {
 	            while (true) {	
 	            	if(serverOutput != null){
 						try {
-							if(!serverOutput.contains(username))
+							//if(!serverOutput.contains(username))
 							System.out.println(br.readLine());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
