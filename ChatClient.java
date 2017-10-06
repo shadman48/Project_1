@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Random;
 
-public final class client {
+public final class ChatClient {
 
     public static void main(String[] args) throws Exception {
         
