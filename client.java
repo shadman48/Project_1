@@ -14,17 +14,13 @@ public final class client {
 
     public static void main(String[] args) throws Exception {
         
-    	
-    	
-    	
-    	
     	try (Socket socket = new Socket("18.221.102.182", 38001)) 
         {
 			String username = "Shadman48";
 			//Send user name.
 			InputStream in = socket.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			BufferedReader br = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+			//DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			OutputStream os = socket.getOutputStream();
 			PrintStream ps = new PrintStream(os, true, "UTF-8");
 			ps.println(username);
@@ -34,23 +30,26 @@ public final class client {
        	
         	
         	//Receive response from server.
-			
-			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
 			BufferedReader brIn = new BufferedReader(new InputStreamReader(System.in));
 			String serverOutput = br.readLine();
 				
 			Runnable chatLog = () -> 
 	        {
-	            while (true) {	
-	            	if(serverOutput != null){
-						try {
-							if(!serverOutput.contains(username))
-							System.out.println(br.readLine());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+	        	String serverOutputOld = "";
+	            while (true) 
+	            {	
+	            	try
+	            	{
+	            		if(serverOutput != null)
+	            	   	{
+	            			System.out.println(br.readLine());
+	               	   	}
 	            	}
+	            	catch (Exception e)
+	            	{
+	            		return;
+	            	}
+	            	
 	            }
 	        };
 	        
@@ -60,25 +59,31 @@ public final class client {
 	        {
 	        	String userInput = "";
 	            while (true) {	
-	            	try {
-						userInput = brIn.readLine();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				    ps.println(userInput);
+						try {
+							userInput = brIn.readLine();
+							ps.println(userInput);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							return;
+						}
+					
+				   
 	            }
 	        };
 	        
 	        
 	        
 	        
+	        Thread clientSideThread = new Thread(clientSide);
 	        Thread chatLogThread = new Thread(chatLog);
 	        chatLogThread.start();
-			
-	        Thread clientSideThread = new Thread(clientSide);
-	        clientSideThread.start();
+			clientSideThread.start();
 		 
+			
+			while (true)
+			{
+				Thread.sleep(1000);
+			}
         }
     }
 }
