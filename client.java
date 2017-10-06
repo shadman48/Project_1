@@ -35,8 +35,7 @@ public final class client {
 				
 			Runnable chatLog = () -> 
 	        {
-	        	String serverOutputOld = "";
-	            while (true) 
+	        	while (true) 
 	            {	
 	            	try
 	            	{
@@ -58,16 +57,17 @@ public final class client {
 	        Runnable clientSide = () -> 
 	        {
 	        	String userInput = "";
-	            while (true) {	
-						try {
-							userInput = brIn.readLine();
-							ps.println(userInput);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							return;
-						}
-					
-				   
+	            while (true) 
+	            {	
+					try 
+					{
+						userInput = brIn.readLine();
+						ps.println(userInput);
+					} 
+					catch (IOException e) 
+					{
+						return;
+					}
 	            }
 	        };
 	        
