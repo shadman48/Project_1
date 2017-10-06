@@ -12,15 +12,14 @@ import java.util.Random;
 
 public final class client {
 
-    public static void main(String[] args) throws Exception, InterruptedException {
+    public static void main(String[] args) throws Exception {
         
     	try (Socket socket = new Socket("18.221.102.182", 38001)) 
         {
 			String username = "Shadman48";
-			
 			//Send user name.
 			InputStream in = socket.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			BufferedReader br = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 			//DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			OutputStream os = socket.getOutputStream();
 			PrintStream ps = new PrintStream(os, true, "UTF-8");
@@ -31,24 +30,25 @@ public final class client {
        	
         	
         	//Receive response from server.
-			
-			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
 			BufferedReader brIn = new BufferedReader(new InputStreamReader(System.in));
 			String serverOutput = br.readLine();
 				
 			Runnable chatLog = () -> 
 	        {
-	            
-	        	while (true) {	
-	            	if(serverOutput.equals(null)){
-						try {
-							System.out.println(br.readLine());
-							//Thread.sleep(5000);
-						} catch ( Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+	        	while (true) 
+	            {	
+	            	try
+	            	{
+	            		if(serverOutput != null)
+	            	   	{
+	            			System.out.println(br.readLine());
+	               	   	}
 	            	}
+	            	catch (Exception e)
+	            	{
+	            		return;
+	            	}
+	            	
 	            }
 	        };
 	        
@@ -57,30 +57,36 @@ public final class client {
 	        Runnable clientSide = () -> 
 	        {
 	        	String userInput = "";
-	            while (true) {	
-	            	try {
+	            while (true) 
+	            {	
+					try 
+					{
 						userInput = brIn.readLine();
-						//Thread.sleep(5000);
-					} catch (IOException e)  {
-						e.printStackTrace();
+						ps.println(userInput);
+					} 
+					catch (IOException e) 
+					{
+						return;
 					}
-				    ps.println(userInput);
 	            }
 	        };
 	        
 	        
 	        
+	        
 	        Thread clientSideThread = new Thread(clientSide);
 	        Thread chatLogThread = new Thread(chatLog);
-	        
-	        clientSideThread.start();
 	        chatLogThread.start();
-	        
+			clientSideThread.start();
 		 
+			
+			while (true)
+			{
+				Thread.sleep(1000);
+			}
         }
     }
 }
-
 
 
 
