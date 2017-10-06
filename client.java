@@ -43,7 +43,7 @@ public final class client {
 	            	if(serverOutput.equals(null)){
 						try {
 							System.out.println(br.readLine());
-							Thread.sleep(5000);
+							//Thread.sleep(5000);
 						} catch ( Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -60,8 +60,8 @@ public final class client {
 	            while (true) {	
 	            	try {
 						userInput = brIn.readLine();
-						Thread.sleep(5000);
-					} catch (IOException | InterruptedException e)  {
+						//Thread.sleep(5000);
+					} catch (IOException e)  {
 						e.printStackTrace();
 					}
 				    ps.println(userInput);
