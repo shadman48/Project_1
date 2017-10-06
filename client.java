@@ -14,17 +14,14 @@ public final class client {
 
     public static void main(String[] args) throws Exception, InterruptedException {
         
-    	
-    	
-    	
-    	
     	try (Socket socket = new Socket("18.221.102.182", 38001)) 
         {
 			String username = "Shadman48";
+			
 			//Send user name.
 			InputStream in = socket.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			//DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			OutputStream os = socket.getOutputStream();
 			PrintStream ps = new PrintStream(os, true, "UTF-8");
 			ps.println(username);
@@ -41,12 +38,13 @@ public final class client {
 				
 			Runnable chatLog = () -> 
 	        {
-	            while (true) {	
-	            	if(serverOutput != null){
+	            
+	        	while (true) {	
+	            	if(serverOutput.equals(null)){
 						try {
-							//if(!serverOutput.contains(username))
 							System.out.println(br.readLine());
-						} catch (IOException e) {
+							Thread.sleep(5000);
+						} catch ( Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -62,8 +60,8 @@ public final class client {
 	            while (true) {	
 	            	try {
 						userInput = brIn.readLine();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						Thread.sleep(5000);
+					} catch (IOException | InterruptedException e)  {
 						e.printStackTrace();
 					}
 				    ps.println(userInput);
@@ -72,12 +70,12 @@ public final class client {
 	        
 	        
 	        
-	        
-	        Thread chatLogThread = new Thread(chatLog);
-	        chatLogThread.start();
-			
 	        Thread clientSideThread = new Thread(clientSide);
+	        Thread chatLogThread = new Thread(chatLog);
+	        
 	        clientSideThread.start();
+	        chatLogThread.start();
+	        
 		 
         }
     }
